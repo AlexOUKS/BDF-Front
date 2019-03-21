@@ -15,7 +15,8 @@
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.5.2",
     "react-scripts": "2.0.5",
-    "reactstrap": "^6.5.0"
+    "reactstrap": "^6.5.0",
+    "dotenv": "^6.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +33,4 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "dotenv": "^6.1.0"
-  }
 }
