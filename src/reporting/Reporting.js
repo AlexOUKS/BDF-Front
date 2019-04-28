@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import NewUser from '../newUser/NewUser';
-import Stock from '../stock/Stock';
+import load from "./img/load.svg";
+import logo from '../img/bdf.jpg';
 import axios from 'axios';
 import { Row, Col, Card, Table, Button, Badge, Modal, ModalBody, CustomInput, ModalHeader, Input, FormGroup, ModalFooter} from 'reactstrap';
 
@@ -18,16 +18,14 @@ class Reporting extends Component {
         this.state = {
             dataDoughnut : {},
             optionDoughnut : {},
-            venteTemp : []}
+            venteTemp : [],
+            loader : ""}
 
 
         this.requestDataFromDate = this.requestDataFromDate.bind(this);
         this.findPercentageProduct = this.findPercentageProduct.bind(this);
-
-
-        };
-
-
+        
+        }
 
     requestDataFromDate(){
 
@@ -35,6 +33,7 @@ class Reporting extends Component {
         var fin = document.getElementById("DateFin");
         console.log(debut.value);
         console.log(fin.value);
+        document.getElementById("Loader").style.display = "block";
         axios.post(process.env.REACT_APP_API_URL+'/ventes/getVenteDF',
 
             {
@@ -43,6 +42,7 @@ class Reporting extends Component {
             },
 
             ).then(res => {
+                     document.getElementById("Loader").style.display = "none";
                     const venteTemp = res.data;
 
 
@@ -193,7 +193,11 @@ class Reporting extends Component {
 
     render() {
         return (
+            
             <div>
+                <div id="Loader" class="Loader">
+                    <img src={load} class="LoaderImg"/>
+                </div>  
                 <Row>
                     <Col>
                     <h3>
