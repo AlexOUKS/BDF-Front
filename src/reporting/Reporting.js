@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import load from "./img/load.svg";
-import logo from '../img/bdf.jpg';
 import axios from 'axios';
 import { Row, Col, Card, Table, Button, Badge, Modal, ModalBody, CustomInput, ModalHeader, Input, FormGroup, ModalFooter} from 'reactstrap';
 
@@ -19,7 +18,8 @@ class Reporting extends Component {
             dataDoughnut : {},
             optionDoughnut : {},
             venteTemp : [],
-            loader : ""}
+            benefit : 0
+           }
 
 
         this.requestDataFromDate = this.requestDataFromDate.bind(this);
@@ -56,11 +56,13 @@ class Reporting extends Component {
                     let dataPercentage = [];
                     let dataName = [];
                     let colors = [];
+                    let benefit = 0;
 
                     for (let j = 0 ; j < A.length; j++) {
                         dataPercentage.push(Math.round(A[j].occurence));
                         dataName.push(A[j].nom);
                         colors.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
+                        benefit += A[j].benefit;
                     }
 
                     let top5Products = [];
@@ -117,9 +119,10 @@ class Reporting extends Component {
                             legend: {
                                 display: false
                              },
-                        }
+                        },
+                        benefit : benefit
                     });
-                    console.log(A);
+                    
 
 
 
@@ -145,6 +148,7 @@ class Reporting extends Component {
             if( !this.tupleFind(tempArray, Produit)){
  
                 let occurence = 0;
+                
 
                 for (let i = 0 ; i < countProduct; i++) {
 
@@ -154,7 +158,7 @@ class Reporting extends Component {
                     }
                 }
                 
-                const tuple = {nom : Produit.produit, occurence : (occurence/countProduct)*100, nombre : occurence};
+                const tuple = {nom : Produit.produit, occurence : (occurence/countProduct)*100, nombre : occurence, benefit : Produit.benefit   };
                 tempArray.push(tuple);
             }
             else{
@@ -217,6 +221,12 @@ class Reporting extends Component {
                     </Col>  
                     
                     <Button onClick={this.requestDataFromDate}>Valider</Button>
+                </Row>
+                <hr />
+                <Row>
+                    
+                    <Col lg="6"> <h5>Bénéfices : <b> {this.state.benefit} € </b></h5></Col>
+                    
                 </Row>
                 <hr />
                 <Row>
