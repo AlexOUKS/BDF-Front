@@ -70,3 +70,20 @@ code {
   color:white;
   transition: 0.2s ease-in-out;
 }
+
+.Loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background:rgba(212, 201, 201, 0.27);
+  z-index: 3;
+  text-align: center;
+  padding-top:10%;
+  display: none;
+}
+
+.LoaderImg {
+  background:0;
+}

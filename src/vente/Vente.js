@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import NewUser from '../newUser/NewUser';
-import Stock from '../stock/Stock';
+import load from "../reporting/img/load.svg";
 import axios from 'axios';
 import { Row, Col, Card, Table, Button, Badge, Modal, ModalBody, CustomInput, ModalHeader, Input, FormGroup, ModalFooter} from 'reactstrap';
 import './Vente.css';
@@ -33,6 +32,7 @@ componentDidMount() {
   }
 
   handleUpload = () => {
+    document.getElementById("Loader").style.display = "block";
       const formData = new FormData();
       formData.append('file',this.state.selectedFile)
 
@@ -45,6 +45,7 @@ componentDidMount() {
         }
 
                 ).then(res => {
+                    document.getElementById("Loader").style.display = "none";
                     console.log(res)
                     this.setState({ventes : res.data.ventesNouvellesTotal});
 
@@ -53,11 +54,14 @@ componentDidMount() {
 
                      //   this.showVentes();
                  //   }
-
+    
 
 
 
       })
+      .catch((r) => {
+          document.getElementById("Loader").style.display = "none";
+          alert("Fichier non valide")});
 
   }
   showTableColumn(){
@@ -122,7 +126,9 @@ componentDidMount() {
     render() {
         return (
             <div>
-
+                <div id="Loader" class="Loader">
+                    <img src={load} class="LoaderImg"/>
+                </div>  
                 <Input type="file" name="" id="" onChange={this.handleselectedFile} />
                 <Button type="success" onClick={this.handleUpload}>Upload</Button>
                 <div> {Math.round(this.state.loaded,2) } %</div>

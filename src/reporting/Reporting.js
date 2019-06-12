@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import NewUser from '../newUser/NewUser';
-import Stock from '../stock/Stock';
+import load from "./img/load.svg";
 import axios from 'axios';
 import { Row, Col, Card, Table, Button, Badge, Modal, ModalBody, CustomInput, ModalHeader, Input, FormGroup, ModalFooter} from 'reactstrap';
 
@@ -18,7 +17,9 @@ class Reporting extends Component {
         this.state = {
             dataDoughnut : {},
             optionDoughnut : {},
-            venteTemp : []}
+            venteTemp : [],
+            benefit : 0
+           }
 
 
         this.requestDataFromDate = this.requestDataFromDate.bind(this);
@@ -39,6 +40,7 @@ class Reporting extends Component {
         var fin = document.getElementById("DateFin");
         console.log(debut.value);
         console.log(fin.value);
+        document.getElementById("Loader").style.display = "block";
         axios.post(process.env.REACT_APP_API_URL+'/ventes/getVenteDF',
 
             {
@@ -47,6 +49,7 @@ class Reporting extends Component {
             },
 
             ).then(res => {
+                     document.getElementById("Loader").style.display = "none";
                     const venteTemp = res.data;
 
 
@@ -60,11 +63,13 @@ class Reporting extends Component {
                     let dataPercentage = [];
                     let dataName = [];
                     let colors = [];
+                    let benefit = 0;
 
                     for (let j = 0 ; j < A.length; j++) {
                         dataPercentage.push(Math.round(A[j].occurence));
                         dataName.push(A[j].nom);
                         colors.push('#'+(Math.random()*0xFFFFFF<<0).toString(16));
+                        benefit += A[j].benefit;
                     }
 
                     let top5Products = [];
@@ -121,9 +126,10 @@ class Reporting extends Component {
                             legend: {
                                 display: false
                              },
-                        }
+                        },
+                        benefit : benefit
                     });
-                    console.log(A);
+                    
 
 
 
@@ -149,6 +155,7 @@ class Reporting extends Component {
             if( !this.tupleFind(tempArray, Produit)){
  
                 let occurence = 0;
+                
 
                 for (let i = 0 ; i < countProduct; i++) {
 
@@ -158,7 +165,7 @@ class Reporting extends Component {
                     }
                 }
                 
-                const tuple = {nom : Produit.produit, occurence : (occurence/countProduct)*100, nombre : occurence};
+                const tuple = {nom : Produit.produit, occurence : (occurence/countProduct)*100, nombre : occurence, benefit : Produit.benefit   };
                 tempArray.push(tuple);
             }
             else{
@@ -197,7 +204,11 @@ class Reporting extends Component {
 
     render() {
         return (
+            
             <div>
+                <div id="Loader" class="Loader">
+                    <img src={load} class="LoaderImg"/>
+                </div>  
                 <Row>
                     <Col>
                     <h3>
@@ -218,6 +229,12 @@ class Reporting extends Component {
                     
                     <Button onClick={this.requestDataFromDate} >Valider</Button>
                     <Button color="danger" onClick={this.deleteVentes} className="Bouton">Reset ventes</Button>
+                </Row>
+                <hr />
+                <Row>
+                    
+                    <Col lg="6"> <h5>Bénéfices : <b> {this.state.benefit} € </b></h5></Col>
+                    
                 </Row>
                 <hr />
                 <Row>
