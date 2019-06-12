@@ -7,7 +7,7 @@ import { Row, Col, Card, Table, Button, Badge, Modal, ModalBody, CustomInput, Mo
 import Validators from "../validators/validators";
 import {Bar, Doughnut} from 'react-chartjs-2';
 
-
+import './Reporting.css';
 
 
 
@@ -23,11 +23,15 @@ class Reporting extends Component {
 
         this.requestDataFromDate = this.requestDataFromDate.bind(this);
         this.findPercentageProduct = this.findPercentageProduct.bind(this);
+        this.deleteVentes = this.deleteVentes.bind(this);
 
 
         };
 
-
+    deleteVentes() {
+        axios.get(process.env.REACT_APP_API_URL+'/ventes/deleteVentes')
+                .then(alert("Ventes réinitialisées"));
+    }
 
     requestDataFromDate(){
 
@@ -212,7 +216,8 @@ class Reporting extends Component {
                     <Input type={"date"} id={"DateFin"}></Input>
                     </Col>  
                     
-                    <Button onClick={this.requestDataFromDate}>Valider</Button>
+                    <Button onClick={this.requestDataFromDate} >Valider</Button>
+                    <Button color="danger" onClick={this.deleteVentes} className="Bouton">Reset ventes</Button>
                 </Row>
                 <hr />
                 <Row>
